@@ -65,12 +65,12 @@ nieliczba:
         jmp koniecprogramu
  
 sprawdzczyzzakresu:
-		mov si, offset buffor + 1 ;adres bajtu dlugosc lancucha
+	mov si, offset buffor + 1 ;adres bajtu dlugosc lancucha
         mov cl, [ si ] ;zapisz do cl - liczba iteracji
         mov ch, 0
         mov bx, 0
         mov ax, 0
-	petla2:
+    petla2:
         inc si
         mov dx, 10
 	mul dx
