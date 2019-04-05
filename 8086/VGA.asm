@@ -71,7 +71,7 @@ INFINITEloop:
     mov	ah,86h
     int	15h
 	
-;wklejanie
+    ;wklejanie
     mov cx,80
     mov ax,0b800h
     mov es,ax
