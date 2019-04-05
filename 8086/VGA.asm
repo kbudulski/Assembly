@@ -1,102 +1,100 @@
 Progr segment
 	assume  cs:Progr,ds:dane,ss:stosik
  
-Start: 
-
-    mov ax,dane
-    mov ds,ax
-    mov	ax,stosik
-    mov	ss,ax
-    mov	sp,offset szczyt
+Start:  mov ax,dane
+    	mov ds,ax
+    	mov ax,stosik
+    	mov ss,ax
+        mov sp,offset szczyt
 	
-    xor	ah,ah
-    mov	al, 03h
-    int	10h
+    	xor ah,ah
+        mov al, 03h
+        int 10h
 	
-    ;wypełnienie
-    mov	ax, 0b800h
-    mov	es, ax  ; es jako pamięć graficzna
-    mov	dl,'A'	; pierwszy symbol
+    	;wypełnienie
+   	mov ax, 0b800h
+   	mov es, ax  ;es jako pamięć graficzna
+    	mov dl,'A'  ;pierwszy symbol
 	
-    outerLoop:
-    mov	cx,80
+outerLoop:
+    	mov cx,80
 	
-        innerLoop:
-	    mov al, dl ; ustawienie symbolu
-	    mov ah, 40H ; kolor (07 - czarne tlo biale litery)
-	    inc dl
-	    stosw
-	    LOOP innerLoop
+    innerLoop:
+	mov al, dl ;ustawienie symbolu
+	mov ah, 40H ;kolor (07 - czarne tlo biale litery)
+	inc dl
+	stosw
+        LOOP innerLoop
 		
-    inc	dl
-    inc	bx
-    cmp	bx, 25
-    jl 	outerLoop
+    	inc dl
+    	inc bx
+    	cmp bx, 25
+    	jl outerLoop
 	
 INFINITEloop:
-    ;pseudolosowanie
-    xor	ah,ah
-    int 1ah ; przerwanie zegarowe, zapis wrejestrach cx i dx
-    mov	al,dl
-    mov	si,ax ; zapisanie losowej wartosci w dl do si
-    mov	dl,tablica(si)	; wykorzystanie wartosci do wylosowania wiersza z tabeli
-    mov	al, 160
-    mul	dl
-    mov	bx,ax
+    	;pseudolosowanie
+	xor ah,ah
+    	int 1ah ;przerwanie zegarowe, zapis wrejestrach cx i dx
+    	mov al,dl
+    	mov si,ax ;Zapisanie losowej wartosci w dl do si
+    	mov dl,tablica(si) ;wykorzystanie wartosci do wylosowania wiersza z tabeli
+    	mov al, 160
+    	mul dl
+    	mov bx,ax
 	
-    ;wykonanie kopii
-    cld
-    mov cx,80
-    push ds
-    pop es
-    push ds
-    mov ax,0b800h
-    mov ds,ax
-    mov di,offset bufor
-    mov si,bx
-    rep movsw ;DS:SI -> ES:DI
-    pop ds
+    	;wykonanie kopii
+    	cld
+    	mov cx,80
+    	push ds
+    	pop es
+    	push ds
+    	mov ax,0b800h
+    	mov ds,ax
+    	mov di,offset bufor
+    	mov si,bx
+    	rep movsw ;DS:SI -> ES:DI
+    	pop ds
 	
-    ;belka
-    mov	ax,0b800h
-    mov	es,ax
-    mov	di,bx
-    mov	al,177	; ustawienie symbolu belki
-    mov	ah, bh ; kolor RANDOM (40 - czerwony)
-    mov	cx, 80
-    rep	stosw
+    	;belka
+    	mov ax,0b800h
+    	mov es,ax
+    	mov di,bx
+    	mov al,177 ;ustawienie symbolu belki
+    	mov ah, bh ;kolor RANDOM (40 - czerwony)
+    	mov cx, 80
+    	rep stosw
 
-    ;czas pół sekundy
-    mov	cx,8
-    mov	ah,86h
-    int	15h
+    	;czas pół sekundy
+    	mov cx,8
+    	mov ah,86h
+    	int 15h
 	
-    ;wklejanie
-    mov cx,80
-    mov ax,0b800h
-    mov es,ax
-    mov si,offset bufor
-    mov di,bx
-    rep movsw
+   	;wklejanie
+    	mov cx,80
+    	mov ax,0b800h
+    	mov es,ax
+    	mov si,offset bufor
+    	mov di,bx
+    	rep movsw
 	
-    ;czas pół sekundy
-    mov cx,8
-    mov ah,86h
-    int 15h
+    	;czas pół sekundy
+   	mov cx,8
+    	mov ah,86h
+    	int 15h
 	
-    ;koniec programu
-    mov	ah, 01h
-    int	16h
-    cmp	al, 0dh
-    jz koniecprogramu
+    	;koniec programu
+    	mov ah, 01h
+    	int 16h
+    	cmp al, 0dh
+    	jz koniecprogramu
 
-    jmp	INFINITEloop
+    	jmp INFINITEloop
 			
 koniecprogramu:
-    mov	ah,08h ;wyczyść bufor klawiatury         
-    int	21h
-    mov	ah,4Ch
-    int	21h		
+    	mov ah,08h ;wyczyść bufor klawiatury         
+    	int 21h
+   	mov ah,4Ch
+    	int 21h		
 			
 Progr ends
 
