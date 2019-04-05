@@ -73,18 +73,18 @@ sprawdzczyzzakresu:
 	petla2:
         inc si
         mov dx, 10
-		mul dx
-		mov bl, [si]
-		mov bh, 0
-		sub bl, 30h
-		add ax, bx
-		jc spozazakresu
-		loop petla2
-		mov si, offset liczba
-		mov [si], ax ;zapisz wynik
-		cmp dx, 0 ;przy mno¿eniu liczba w dx oznacza przekroczenie 16-bitowej wartoœci
-		jnz spozazakresu
-		ret
+	mul dx
+	mov bl, [si]
+	mov bh, 0
+	sub bl, 30h
+	add ax, bx
+	jc spozazakresu
+	loop petla2
+	mov si, offset liczba
+	mov [si], ax ;zapisz wynik
+	cmp dx, 0 ;przy mnoÂ¿eniu liczba w dx oznacza przekroczenie 16-bitowej wartoÅ“ci
+	jnz spozazakresu
+	ret
  
 spozazakresu:
         mov dx,offset outofrange
@@ -206,7 +206,7 @@ kod ends
 dane segment
     powitanie db 'Podaj liczbe z zakresu 0-65535:',10,13,'$'
     newline db 10,13,'$'
-    notanumber db 'Nie poda³eœ liczby',10,13,'$'
+    notanumber db 'Nie podaÂ³eÅ“ liczby',10,13,'$'
     outofrange db 'Liczba spoza zakresu',10,13,'$'
 buffor  db 6;max dlugosc lancucha
         db ?;dlugosc wprowadzonego lancucha
